@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <label for="sub">Subject:</label>
+  <select id="sub">
+    <option value="all">All</option>
+    <option value="1">Math</option>
+    <option value="2">Science</option>
+  </select>
+
+  <label for="min">Min Score:</label>
+  <input id="min" type="number" value="0">
+  <button onclick="filterT()">Filter</button>
+
+  <table id="t" border="1">
+    <tr>
+      <th onclick="sortT(0)">Name</th>
+      <th onclick="sortT(1)">Math</th>
+      <th onclick="sortT(2)">Science</th>
+    </tr>
+    <tr>
+      <td>Alice</td>
+      <td>78</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>Bob</td>
+      <td>92</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td>Charlie</td>
+      <td>65</td>
+      <td>95</td>
+    </tr>
+  </table>
+
+  <script>
+    function sortT(c) {
+      let rows = [...document.querySelector('#t').rows].slice(1);
+      let asc = document.querySelector('#t').getAttribute('data-asc');
+      rows.sort((x, y) => asc ? 
+        x.cells[c].innerHTML - y.cells[c].innerHTML : 
+        y.cells[c].innerHTML - x.cells[c].innerHTML);
+      rows.forEach(el => document.querySelector('#t').appendChild(el));
+      document.querySelector('#t').setAttribute('data-asc', asc ? 0 : 1);
+    }
+
+    function filterT() {
+      let s = document.querySelector('#sub').value;
+      let m = document.querySelector('#min').value;
+      [...document.querySelector('#t').rows].slice(1).forEach(r => {
+        let show = true;
+        if (s != 'all') r.cells[s].innerHTML < m ? show = false : null;
+        r.style.display = show ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>
